@@ -1,1 +1,0 @@
--- 0002_admin_auth.sql - Your existing admin auth migration - keep original here

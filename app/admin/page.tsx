@@ -1,0 +1,8 @@
+import { createClient } from '@/lib/supabase/server'
+import Link from 'next/link'
+export default async function AdminDash(){
+  const supabase = createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  const { data: myReqs } = await supabase.from('approval_requests').select('*').eq('submitted_by', user?.id).order('submitted_at', {ascending:false}).limit(20)
+  return (<div className="max-w-6xl mx-auto p-6 space-y-6"><h1 className="text-3xl font-bold">Admin Dashboard</h1><div className="grid md:grid-cols-3 gap-4"><Link href="/admin/locos/new" className="bg-slate-900 text-white p-6 rounded-xl">Add / Edit Locomotive</Link><Link href="/admin/bulk-upload" className="bg-white border p-6 rounded-xl">Bulk Excel Upload</Link><Link href="/admin/locos" className="bg-white border p-6 rounded-xl">View Locomotives</Link></div><div className="bg-white border rounded-xl p-5"><h3 className="font-semibold mb-3">My Submissions</h3><table className="w-full text-sm"><thead className="bg-slate-50"><tr><th className="p-2 text-left">ID</th><th className="p-2">Type</th><th className="p-2">Loco</th><th className="p-2">Status</th><th className="p-2">Date</th></tr></thead><tbody>{myReqs?.map((r:any)=><tr key={r.id} className="border-t"><td className="p-2 font-mono text-xs">{r.id.slice(0,8)}</td><td className="p-2">{r.request_type}</td><td className="p-2">{r.locomotive_number || 'BULK'}</td><td className="p-2">{r.status}</td><td className="p-2">{new Date(r.submitted_at).toLocaleDateString()}</td></tr>)}</tbody></table></div></div>)
+}

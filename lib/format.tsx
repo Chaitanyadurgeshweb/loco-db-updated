@@ -1,0 +1,1 @@
+export function na(v:any){ return v===null||v===undefined||v===''?'—':String(v) }

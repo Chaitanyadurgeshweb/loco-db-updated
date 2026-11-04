@@ -1,0 +1,3 @@
+-- 0001_schema.sql - Original schema (keep your existing file here)
+-- This placeholder ensures deployment works
+-- Your live DB already has this applied
